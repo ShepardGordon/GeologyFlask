@@ -1,6 +1,5 @@
 #Import all flask operations needed
-from flask import render_template, flash, session, request, jsonify
-from flask.sessions import SessionInterface
+from flask import render_template, flash, request
 #Import redis to use as a database
 import redis
 from app import app
