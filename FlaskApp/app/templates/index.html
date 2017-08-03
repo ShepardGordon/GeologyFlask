@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta charset="utf-8">
+		<title>Surface Geology</title>
+		<style>
+			/* Always set the map height explicitly to define the size of the div
+			 * element that contains the map. */
+			#map {
+			  height: 450px;
+			  width: 1000px;
+			  margin-right:auto;
+			}
+			/* Optional: Makes the sample page fill the window. */
+			html, body {
+			  height: 100%;
+			  margin: 10;
+			  padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<script>
+			function initMap() {
+				var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 2,
+				center: {lat: 0, lng: 0},
+				mapTypeId: 'hybrid'
+				});
+			}
+			</script>
+			<script async defer
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3MM6bjobJMEqlk7JQCrNfkAM5ATWpQO8&callback=initMap">
+			</script>
+		
+		<div id="map" style="float:right;width: 1000px;height: 450px;"></div>
+		
+		<div>
+			<p>Select an GEOJSON json file:</p>
+		</div>
+		
+		<script>
+			function file_alert() {
+				alert("File is now submitted! Loading may take several minutes");
+			}
+		</script>
+
+		<form action="/file_input/" method = "post">
+			<input type="file" id="df" name="datafile" size="40">
+			<input type="submit" onclick = file_alert() name="submit_json" value="Submit Json">
+		</form>
+		
+		
+		<form action="/sort/" method = "post">
+			{% if toggle == True: %}
+				{% for attribute in attributes.keys()%}
+					{% if (attributes.sinter(attribute)|length) < 100 %}
+						<script>
+							document.{{attribute}}=function(id){
+							    document.getElementById(id).style.display='';
+							}
+						</script>
+					{%endif%}
+				{%endfor%}
+			{%endif%}
+			<p>{{current_polygons}} out of {{total_polygons}} polygons loaded</p>
+			<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+			Select an attribute below, then pick a sub-attribute, then press submit:<br>
+			If the selected attribute has less than 100 unique sub-attributes, a dropwndown box will appear that you can select<br>
+			Alternatively you can fill in the input box<br>
+			{% if toggle == True: %}
+				<select onchange="document[value](value)" name = "attribute">
+				{% for attribute in attributes.keys()|sort %}
+					<option value="{{ attribute }}">{{ attribute }}</option>
+				{% endfor %} 
+				</select>
+			
+				{% for attribute in attributes.keys()%}
+					{% if (attributes.sinter(attribute)|length) < 100 %}
+						<select onchange="document[value](value)" id={{attribute}} name={{attribute}}  style="display:none;">
+							{% for sub_attribute in attributes.sinter(attribute)|sort %}
+								<option value="{{sub_attribute}}">{{sub_attribute}}</option>
+							{% endfor %}
+						</select>
+					{%endif%}
+				{% endfor %}
+			{%endif%}
+			<br><input type="text" name = "submit_sub_attribute_text">
+			<script>
+				function submit_alert() {
+					alert("Attribute and sub-attribute are now being added!");
+				}
+			</script>
+			<input type="submit" onclick = submit_alert() name="sub_attribute_generate" value="Submit Attribute and Sub-Attribute">
+
+		</form>
+		
+		<div>
+			<p>Sorted {{times}} times</p>
+			<p>Here are your sort orders in order:<p>
+			{% for attribute in search_terms.keys() %}
+				<p>Attribute: {{attribute}}, Sub-Attribute: {{search_terms.get(attribute)}}<p>
+			{% endfor %}	
+		</div>
+		
+		<script>
+			function map_alert() {
+				alert("Map will now generate!");
+			}
+		</script>
+		
+		<form action="/generate_map/" method="post">
+			<p>Before generating a map, select a color selection method below:</p>
+			<select name = "color">
+				<option value="Uniform Color">Uniform</option>
+				<option value="Ordered Colors">Ordered</option>
+				<option value="Random Colors">Random</option>
+			</select>
+			<input type="submit" onclick = map_alert() name="map" value="Submit Map">
+		</form>
+		
+		<script>
+			function reset_alert() {
+				alert("Search queries will now reset!");
+			}
+		</script>
+		
+		<form action="/reset/"method="post">
+			<input type="submit" onclick = reset_alert() name="reset" value="Reset Search Terms">
+		</form>
+		
+	
+	</body>
+</html>

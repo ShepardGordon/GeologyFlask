@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta charset="utf-8">
+		<title>Surface Geology</title>
+		<style>
+			/* Always set the map height explicitly to define the size of the div
+			 * element that contains the map. */
+			#map {
+			  height: 400px;
+			  width: 1000px;
+			  margin-right:auto;
+			}
+			/* Optional: Makes the sample page fill the window. */
+			html, body {
+			  height: 100%;
+			  margin: 10;
+			  padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+	
+		<div>
+			<p></p>
+		</div>
+		
+		<script>
+			function initMap() {
+				console.log("Initalizing map")
+				var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 2,
+				center: {lat: 0, lng: 0},
+				mapTypeId: 'hybrid'
+				});
+			}
+			</script>
+			<script async defer
+				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3MM6bjobJMEqlk7JQCrNfkAM5ATWpQO8&callback=initMap">
+			</script>
+		
+		<div id="map" style="float:right"></div>
+		
+		<form action="/file_input/" method = "post">
+			<input type="file" id="df" name="datafile" size="40">
+			<input type="submit" name="submit_json" value="Submit Json">
+		</form>
+		
+		
+		<form action="/load_sub_attributes/" method = "post">
+			<p>There is now a total of {{total_polygons}} polygons loaded</p>
+			Select an attribute below:<br>
+			<select name = "attribute">
+			{% for attribute in attribute_list %}
+				<option value="{{ attribute }}">{{ attribute }}</option>
+			{% endfor %} 
+			</select>
+			<input type="submit" name="sub_attribute_generate" value="Generate Sub-Attributes">
+		</form>
+		
+		<form action="/sort/" method = "post">
+			<select name = "sub_attribute">
+				{% for sub_attribute in sub_attribute_list %}
+					<option value="{{ sub_attribute }}">{{ sub_attribute }}</option>
+				{% endfor %}
+			</select>
+			<input type="text" name = "submit_sub_attribute_text">
+			<!--<input type="submit" name="submit_attribute" value="Submit Attribute and Sub-Attribute">-->
+			<p>Sorted {{times}} so far</p>
+		</form>
+		
+		<div>
+			<p>Here are your sort orders in order:<p>
+			{% for attributes in attribute_tuples %}
+				<p>Attribute: {{attributes[0]}}, Sub-Attribute: {{attributes[1]}}<p>
+			{% endfor %}	
+		</div>
+		
+		<form action="/generate_map/" method="post">
+			<p>Before generating a map, select a color selection method below:</p>
+			<select name = "color">
+				<option value="Uniform Color">Uniform</option>
+				<option value="Ordered Colors">Ordered</option>
+				<option value="Random Colors">Random</option>
+			</select>
+			<input type="submit" name="map" value="Submit Map">
+		</form>
+		
+		<form action="/reset/"method="post">
+				<input type="submit" name="reset" value="Reset Search Terms">
+		</form>
+	
+	</body>
+</html>

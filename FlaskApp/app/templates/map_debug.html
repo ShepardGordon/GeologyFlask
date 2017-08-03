@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Surface Geology</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    {% extends "index.html" %}
+    <!--<div id="map"></div>-->
+    <!--<script>-->
+
+      <!--var addListenersOnPolygon = function(polygon) {-->
+	<!--google.maps.event.addListener(polygon, 'click', function (event) {-->
+	<!--alert(all_alerts[polygon.indexID]);-->
+	<!--});  -->
+      <!--}-->
+
+      <!--function initMap() {-->
+	<!--console.log("Initalizing map")-->
+        <!--var map = new google.maps.Map(document.getElementById('map'), {-->
+          <!--zoom: 2,-->
+          <!--center: {lat: 0, lng: 0},-->
+          <!--mapTypeId: 'hybrid'-->
+        <!--});-->
+	
+	<!--var colors = ['#FF0000']-->
+	<!--var shapeCoords = [];-->
+	<!--var r = 0;-->
+	<!--{% if color_option == "Uniform Color" %}-->
+	  <!--colors = ['#FF0000']-->
+	  <!--console.log("Using uniform colors")-->
+	<!--{% elif color_option == "Ordered Colors" or color_option == "Random Colors"%}-->
+	  <!--colors = ['#800080','#0000FF','#008000','#FFFF00','#FF0000','#008080','#FFA500', '#FF00FF', '#00FFFF'];-->
+	  <!--{% if color_option == "Ordered Colors" %}-->
+	    <!--console.log("Using ordered colors")-->
+	  <!--{% else %}-->
+	    <!--console.log("Using random colors")-->
+	  <!--{% endif %}-->
+	<!--{% endif %}-->
+	<!--console.log("Loading in all polygons")-->
+	<!--var counter = 0;-->
+	<!--all_alerts = [];-->
+	<!--{% for x in geology_dict %}-->
+	  <!--shapeCoords = []-->
+	  <!--{% for cord in geology_dict[x]["coordinates"] %} -->
+	    <!--lat  = {{cord[1]}};-->
+	    <!--lon  = {{cord[0]}};-->
+	    <!--var new_cor = ({lat: lat, lng: lon });-->
+	    <!--shapeCoords.push(new_cor);-->
+	  <!--{% endfor %}-->
+	  <!--new_alert = "";-->
+	  <!--{% for attribute in geology_dict[x] %}-->
+	    <!--{% if attribute != "coordinates" and attribute != "color" %}-->
+	    <!--new_alert+='{{attribute}} : {{geology_dict[x][attribute]}}\n';-->
+	    <!--{% endif %}-->
+	  <!--{% endfor %}-->
+	  <!--all_alerts.push(new_alert);-->
+	  <!--var new_area = new google.maps.Polygon({-->
+	    <!--paths: shapeCoords,-->
+	    <!--strokeColor: colors[r],-->
+	    <!--strokeOpacity: 0.8,-->
+	    <!--strokeWeight: 2,-->
+	    <!--fillColor: colors[r],-->
+	    <!--fillOpacity: 0.35,-->
+	    <!--indexID: counter-->
+	  <!--});-->
+	  <!--<!--Based on previous entry the next color will be picked if not uniform-->-->
+	  <!--{% if color_option == "Ordered Colors" %}-->
+	    <!--if (r == 8) r = 0;-->
+	    <!--else r+=1;-->
+	  <!--{% elif color_option == "Random Colors"%}-->
+	    <!--r = Math.floor(Math.random() * 7);-->
+	  <!--{%endif%}-->
+	  <!--new_area.setMap(map);-->
+	  <!--addListenersOnPolygon(new_area);-->
+	  <!--counter++;-->
+	<!--{% endfor %}-->
+
+      <!--}-->
+    <!--</script>-->
+    <!--<script async defer-->
+    <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3MM6bjobJMEqlk7JQCrNfkAM5ATWpQO8&callback=initMap">-->
+    <!--</script>-->
+  </body>
+</html>
